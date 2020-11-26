@@ -1,64 +1,42 @@
 import React, { useEffect, useState } from "react";
-import './main.css'
+import { getRandomNum, generateColors } from "./color-generator";
+import "./main.css";
 
 function App() {
-  const [color, setColor] = useState("");
-  const [level, setLevel] = useState(6);
-  const [colorsArray, setColorsArray] = useState([]);
+  const [difficulty, setDifficulty] = useState(6),
+        [colorsArray, setColors] = useState(generateColors(6)),
+        [secretColor, setSecret] = useState(colorsArray[getRandomNum(6)]),
+        [gameState, setGameState] = useState('start');
 
   useEffect(() => {
-    const newArray = [];
-    for (let i = 1; i <= level; i++) {
-      newArray.push(
-        `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`
-      )
-    };
-    setColorsArray(newArray);
-  }, [level]);
+    setColors(generateColors(difficulty));
+    setSecret(colorsArray[getRandomNum(difficulty)])
+  }, [difficulty]); //Change to useReducer 
 
-
-
-  useEffect(() => {
-    setColor(colorsArray[Math.floor(Math.random() * (colorsArray.length - 1))])
-  }, [colorsArray]);
-
-  const [isWin, setWin] = useState(false);
-  const [styles, setStyles] = useState({
-    width: 100,
-    height: 100,
+  const tiles = colorsArray.map((color, i) => {
+    return (
+      <div
+      key={i}
+      className="tile"
+      style={{
+        background: color,
+      }}
+    ></div>
+    )
   });
-
-
-  const checkColors = e => {
-    if (e.target.style.backgroundColor===color) {
-      setStyles({...styles, visibility: 'visible'});
-      setWin(true);
-    } else {
-      e.target.style.visibility = 'hidden'
-    }
-  }
-
 
   return (
     <>
       <h1>the color game</h1>
-      <h2 className='color'> {color} </h2>
+      <h2 className="color"> {secretColor} </h2>
       <h2>is your color for this round</h2>
 
-      <button onClick={() => { setLevel(6); setWin(false) }}>EASY</button>
-      <button onClick={() => { setLevel(9); setWin(false) }}>HARD</button>
+      <button onClick={() => setDifficulty(6)}>EASY</button>
+      <button onClick={() => setDifficulty(9)}>HARD</button>
 
-      <div className='container'>
-        {colorsArray.map(tilecolor =>
-          <div 
-          className='tile' 
-          style={{ ...styles, backgroundColor: isWin? color : tilecolor }} 
-          onClick={checkColors}
-          >
-          </div>
-        )}
+      <div className="container">
+        {tiles}
       </div>
-
     </>
   );
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import './main.css'
 
 function App() {
   const [color, setColor] = useState("");
@@ -16,30 +17,48 @@ function App() {
   }, [level]);
 
 
+
   useEffect(() => {
     setColor(colorsArray[Math.floor(Math.random() * (colorsArray.length - 1))])
   }, [colorsArray]);
 
-  const styles = {
+  const [isWin, setWin] = useState(false);
+  const [styles, setStyles] = useState({
     width: 100,
     height: 100,
+  });
+
+
+  const checkColors = e => {
+    if (e.target.style.backgroundColor===color) {
+      setStyles({...styles, visibility: 'visible'});
+      setWin(true);
+    } else {
+      e.target.style.visibility = 'hidden'
+    }
   }
 
 
   return (
     <>
       <h1>the color game</h1>
-      <h2> {color} </h2>
+      <h2 className='color'> {color} </h2>
       <h2>is your color for this round</h2>
 
-      <div>
+      <button onClick={() => { setLevel(6); setWin(false) }}>EASY</button>
+      <button onClick={() => { setLevel(9); setWin(false) }}>HARD</button>
+
+      <div className='container'>
         {colorsArray.map(tilecolor =>
-          <div style={{ ...styles, backgroundColor: tilecolor }}></div>
+          <div 
+          className='tile' 
+          style={{ ...styles, backgroundColor: isWin? color : tilecolor }} 
+          onClick={checkColors}
+          >
+          </div>
         )}
       </div>
 
-      <button onClick={() => { setLevel(6) }}>EASY</button>
-      <button onClick={() => { setLevel(9) }}>HARD</button>
     </>
   );
 }

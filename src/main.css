@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+body {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    color: #dfdfdf;
+    background-color: #131313;
+}
+
+h1, h2 {
+    text-transform: uppercase;
+    text-align: center;
+}
+.color {
+    font-size: 50px;
+}
+
+.container {
+    margin: 0 auto;
+    width: 90vw;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-content: space-between;
+}
+
+.tile {
+    min-width: 20vw;
+    min-height: 20vh;
+    margin: 2vw;
+}

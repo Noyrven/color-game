@@ -2,6 +2,6 @@
 
 A simple color guessing game build with React Hooks 
 
-#RULES
+## RULES
 
 You're given with a random RGB coded color. Try to guess which tile represents that color without opening devtools

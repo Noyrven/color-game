@@ -6,7 +6,9 @@ function App() {
   const [difficulty, setDifficulty] = useState(6),
         [colorsArray, setColors] = useState(generateColors(6)),
         [secretColor, setSecret] = useState(colorsArray[getRandomNum(5)]),
-        [gameState, setGameState] = useState("start");
+        [gameState, setGameState] = useState("start"),
+        [isEasy, setEasy] = useState(true),
+        [isHard, setHard] = useState(false);
 
   const checkMatch = e => {
     const tile = e.target.style;
@@ -17,7 +19,7 @@ function App() {
       setGameState("wrong");
       tile.background = "#131313";
       tile.boxShadow = "none";
-      tile.webkitBoxShadow = "none";
+      tile.webkitBoxShadow = "none"; 
       tile.cursor = "default";
     }
   };
@@ -30,6 +32,13 @@ function App() {
     setColors(generateColors(difficulty));
     dispatch();
   };
+
+  const clickHandler = num => {
+    setDifficulty(num);
+    setGameState("start");
+    setEasy(!isEasy);
+    setHard(!isHard)
+  }
 
   const tiles = colorsArray.map((color, i) => {
     return (
@@ -49,19 +58,21 @@ function App() {
 
   return (
     <>
-    <h1>the color game</h1>
-    <h2 className="color"> {secretColor} </h2>
-    <h2>is your color for this round</h2>
+      <div className="title" style={{background: gameState==="won"? secretColor : ''}}>
+        <h1>the color game</h1>
+        <h2 className="color"> {secretColor} </h2>
+        <h2>is your color for this round</h2>
 
-    <div>
-      <span>game mode: </span>
-      <button onClick={() => { setDifficulty(6); setGameState('start') }}>easy</button>
-      <button onClick={() => { setDifficulty(9); setGameState('start') }}>hard</button>
-      <button onClick={() => newGame()}>new round</button>
-    </div>
+        <div className="header">
+          <span>game mode: </span>
+          <span className={`button ${isEasy ? 'selected' : ''}`} onClick={() => clickHandler(6)}>easy</span>
+          <span className={`button ${isHard ? 'selected' : ''}`} onClick={() => clickHandler(9)}>hard</span>
+          <span className="button new" style={{color: gameState==="won"? secretColor :'#131313' }} onClick={() => newGame()}>new round</span>
+        </div>
+      </div>
 
-    <div className="container">{tiles}</div>
-  </>
+      <div className="container">{tiles}</div>
+    </>
   )
 }
 

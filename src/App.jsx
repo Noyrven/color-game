@@ -6,9 +6,7 @@ function App() {
   const [difficulty, setDifficulty] = useState(6),
         [colorsArray, setColors] = useState(generateColors(6)),
         [secretColor, setSecret] = useState(colorsArray[getRandomNum(5)]),
-        [gameState, setGameState] = useState("start"),
-        [isEasy, setEasy] = useState(true),
-        [isHard, setHard] = useState(false);
+        [gameState, setGameState] = useState("start");
 
   const checkMatch = e => {
     const tile = e.target.style;
@@ -36,8 +34,6 @@ function App() {
   const clickHandler = num => {
     setDifficulty(num);
     setGameState("start");
-    setEasy(!isEasy);
-    setHard(!isHard)
   }
 
   const tiles = colorsArray.map((color, i) => {
@@ -65,8 +61,8 @@ function App() {
 
         <div className="header">
           <span>game mode: </span>
-          <span className={`button ${isEasy ? 'selected' : ''}`} onClick={() => clickHandler(6)}>easy</span>
-          <span className={`button ${isHard ? 'selected' : ''}`} onClick={() => clickHandler(9)}>hard</span>
+          <span className={`button ${difficulty===6 ? 'selected' : ''}`} onClick={() => clickHandler(6)}>easy</span>
+          <span className={`button ${difficulty===9 ? 'selected' : ''}`} onClick={() => clickHandler(9)}>hard</span>
           <span className="button new" style={{color: gameState==="won"? secretColor :'#131313' }} onClick={() => newGame()}>new round</span>
         </div>
       </div>
